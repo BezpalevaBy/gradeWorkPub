@@ -107,8 +107,6 @@
         <Compile Include="Methods\CaptureWindow.cs" />
         <Compile Include="Methods\IpWorker.cs" />
         <Compile Include="Methods\MediaWindow.cs" />
-        <Compile Include="Network\Connection.cs" />
-        <Compile Include="Network\Heartbeat.cs" />
         <Compile Include="Network\Listener.cs" />
         <Compile Include="Network\Messages\Message.cs" />
         <Compile Include="Network\Messages\NetMessageParser.cs" />

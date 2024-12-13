@@ -10,7 +10,6 @@ namespace GradeWork
     public partial class Form1 : Form
     {
         public static Form1 Instance;
-        public Connection Connection;
         public Listener Server;
         
         public string userName;
@@ -23,7 +22,6 @@ namespace GradeWork
         public Form1()
         {
             Instance = this;
-            Connection = new Connection();
             Server = new Listener(IpWorker.GetLocalIpAddress(), this);
             
             InitializeComponents();
@@ -32,26 +30,6 @@ namespace GradeWork
 
             //TestFunction2();
         }
-
-        private void TestFunction2()
-        {
-            // URL или локальный путь к видео
-            string movieUrl = "https://example.com/bunny.mp4"; // Замените ссылкой на фильм про зайца
-
-            try
-            {
-                // Создаем экземпляр MediaWindow и запускаем воспроизведение
-                var mediaWindow = new MediaWindow();
-                mediaWindow.CreateAndPlay(movieUrl, mainPanel);
-
-                MessageBox.Show("Now playing: Bunny Movie!", "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}", "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void InitUser()
         {
             using var startForm = new StartForm(this);
@@ -71,7 +49,6 @@ namespace GradeWork
             Size = new Size(800, 600);
             StartPosition = FormStartPosition.CenterScreen;
 
-            // Верхний Label с информацией о пользователе
             labelUserInfo = new Label
             {
                 Text = $"User: {userName}, IP: {userIp}",
@@ -82,7 +59,6 @@ namespace GradeWork
             };
             Controls.Add(labelUserInfo);
 
-            // Центральная панель для консоли или видео
             mainPanel = new Panel
             {
                 Dock = DockStyle.Fill,
@@ -91,7 +67,6 @@ namespace GradeWork
             };
             Controls.Add(mainPanel);
 
-            // Нижняя кнопка для вызова CallForm
             buttonCallForm = new Button
             {
                 Text = "Call Another Machine",
@@ -112,21 +87,6 @@ namespace GradeWork
                         MessageBoxIcon.Information);
                 }
             }
-        }
-
-        private void TestFunction()
-        {
-            InitializeComponent();
-
-            string ip = "udp://127.0.0.1:1234?pkt_size=1316";
-
-            CaptureWindow captureWindow = new CaptureWindow(ip);
-            captureWindow.StartCapture();
-
-            ip = "udp://@127.0.0.1:1234?pkt_size=1316";
-
-            //MediaWindow mediaWindow = new MediaWindow(this);
-            //var media = mediaWindow.CreateAndPlay(ip);
         }
     }
 }

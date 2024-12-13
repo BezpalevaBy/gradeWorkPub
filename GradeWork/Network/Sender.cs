@@ -23,11 +23,9 @@ public class Sender
             using var client = new TcpClient(remoteIp, port);
             using var stream = client.GetStream();
 
-            //var message = $"Ping from {localIp} at {DateTime.Now}";
             var data = Encoding.UTF8.GetBytes(message);
 
             stream.Write(data, 0, data.Length);
-            //Console.WriteLine($"Sent message: {message}");
         }
         catch (Exception ex)
         {

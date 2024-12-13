@@ -41,7 +41,6 @@ public class Listener
         {
             TcpClient client = await _tcpListener.AcceptTcpClientAsync();
 
-            // Обработка клиента в отдельном потоке
             _ = HandleClient(client);
         }
     }

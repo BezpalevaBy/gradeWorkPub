@@ -26,46 +26,35 @@ public class Promise
 
     public async Task<bool> IsGetAnswer()
     {
-        // Set the timeout using the provided seconds
         _cancellationTokenSource = new CancellationTokenSource();
         var token = _cancellationTokenSource.Token;
 
-        // Start listening for the response in the background
         var responseTask = ListenForResponseAsync(token);
 
-        // Wait for either the response or the timeout
         var completedTask = await Task.WhenAny(responseTask, Task.Delay((int)(SecondsForPromise * 1000), token));
 
-        // If the response task completed first, return true
         if (completedTask == responseTask)
         {
             return await responseTask;
         }
 
-        // If timeout occurs, return false
         return false;
     }
 
     private async Task<bool> ListenForResponseAsync(CancellationToken token)
     {
-        // This method simulates listening for a response
-        // Here you should implement the actual logic to check if a response is received
-        // For example, you might use a shared variable or a callback to notify when a response is received
-
-        // Simulate waiting for a response from the listener (e.g., checking messages from the listener)
         while (!token.IsCancellationRequested)
         {
-            // Check if a response has been received. For now, simulate a response check
             bool receivedResponse = CheckForResponse();
             if (receivedResponse)
             {
                 return true;
             }
 
-            await Task.Delay(10); // Check every 100ms for the response
+            await Task.Delay(10);
         }
 
-        return false; // Return false if cancellation is requested (i.e., timeout reached)
+        return false;
     }
 
     private bool CheckForResponse()
@@ -78,7 +67,6 @@ public class Promise
 
     public void Cancel()
     {
-        // Cancel the task if needed
         _cancellationTokenSource?.Cancel();
     }
 }

@@ -26,7 +26,6 @@ namespace GradeWork.Forms
             Size = new System.Drawing.Size(400, 150);
             StartPosition = FormStartPosition.CenterScreen;
 
-            // Метка для поля ввода IP
             labelIpAddress = new Label
             {
                 Text = "Enter target IP address:",
@@ -35,7 +34,6 @@ namespace GradeWork.Forms
             };
             Controls.Add(labelIpAddress);
 
-            // Поле ввода IP
             inputIpAddress = new TextBox
             {
                 Location = new System.Drawing.Point(20, 50),
@@ -43,7 +41,6 @@ namespace GradeWork.Forms
             };
             Controls.Add(inputIpAddress);
 
-            // Кнопка для подтверждения ввода
             buttonSubmit = new Button
             {
                 Text = "Connect",
@@ -64,7 +61,6 @@ namespace GradeWork.Forms
                 return;
             }
 
-            // Проверка формата IP-адреса
             if (!IsValidIp(TargetIp))
             {
                 MessageBox.Show("Invalid IP address format.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -79,7 +75,6 @@ namespace GradeWork.Forms
 
         private async void Smth()
         {
-            // TODO implement new connection with Sender&Listener
             var promise = new Promise(TargetIp, 1,new HashSet<Type>()
             {
                 Type.WaitingRESPONSE,
@@ -92,7 +87,6 @@ namespace GradeWork.Forms
 
         private bool IsValidIp(string ip)
         {
-            // Простой способ проверить корректность IP-адреса
             var parts = ip.Split('.');
             if (parts.Length != 4) return false;
 

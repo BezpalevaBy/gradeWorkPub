@@ -29,11 +29,9 @@ namespace GradeWork.Methods
                 Dock = DockStyle.Fill
             };
 
-            // Очищаем контейнер и добавляем VideoView
             container.Controls.Clear();
             container.Controls.Add(videoView);
 
-            // Инициализация VLC
             Core.Initialize();
             _libVlc = new LibVLC();
             _mediaPlayer = new MediaPlayer(_libVlc);

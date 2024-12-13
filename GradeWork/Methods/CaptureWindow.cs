@@ -42,7 +42,6 @@ namespace GradeWork.Methods
         {
             try
             {
-                // Создание временного файла для записи
                 using (var ffmpegProcess = CreateFFmpegProcess())
                 {
                     while (_isCapturing)
@@ -75,7 +74,7 @@ namespace GradeWork.Methods
         {
             var ffmpegStartInfo = new ProcessStartInfo
             {
-                FileName = "ffmpeg", // Убедитесь, что FFmpeg добавлен в PATH
+                FileName = "ffmpeg",
                 Arguments = $"-f image2pipe -i - -vf fps=60 -vcodec libx264 -f mpegts {Ip}",
                 RedirectStandardInput = true,
                 UseShellExecute = false,
