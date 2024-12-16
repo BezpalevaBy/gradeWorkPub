@@ -5,9 +5,17 @@ namespace GradeWork.Network.Messages;
 
 public class NetMessageParser
 {
-    public static string GetNetMessage(string ip, HashSet<Type> types)
+    public static string GetNetMessageWithValue(HashSet<Type> types, string messageToSend)
     {
-        ip = IpWorker.GetLocalIpAddress();
+        var message = GetNetMessage(types);
+
+        message += $"VALUETOSEND|{messageToSend}|VALUETOSEND";
+
+        return message;
+    }
+    public static string GetNetMessage(HashSet<Type> types)
+    {
+        var ip = IpWorker.GetLocalIpAddress();
         string message = $"MESSAGE IP|{ip}|{Form1.Instance.userName}|IP";
         foreach (var type in types)
         {
@@ -24,6 +32,24 @@ public class NetMessageParser
                     break;
                 case Type.VideoAccess:
                     message += " VIDEOACCESS";
+                    break;
+                case Type.TerminalAccess:
+                    message += "TERMINALACCESS";
+                    break;
+                case Type.TerminalMessage:
+                    message += "TERMINALMESSAGE";
+                    break;
+                case Type.TerminalNotResponse:
+                    message += "TERMINALNOTRESP";
+                    break;
+                case Type.TerminalResponse:
+                    message += "TERMINALRESP";
+                    break;
+                case Type.MoveMouse:
+                    message += "MOVEMOUSE";
+                    break;
+                case Type.ClickMouse:
+                    message += "CLICKMOUSE";
                     break;
             }
         }

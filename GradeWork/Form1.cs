@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using GradeWork.Forms;
@@ -18,6 +19,8 @@ namespace GradeWork
         private Label labelUserInfo;
         public Panel mainPanel;
         private Button buttonCallForm;
+
+        public Dictionary<string, TerminalForm> Terminals = new();
 
         public Form1()
         {

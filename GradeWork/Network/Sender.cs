@@ -22,10 +22,16 @@ public class Sender
         {
             using var client = new TcpClient(remoteIp, port);
             using var stream = client.GetStream();
-
+            
+            message = message.ToLower();
+            Console.WriteLine(message);
+            
             var data = Encoding.UTF8.GetBytes(message);
 
             stream.Write(data, 0, data.Length);
+            
+            stream.Dispose();
+            client.Dispose();
         }
         catch (Exception ex)
         {

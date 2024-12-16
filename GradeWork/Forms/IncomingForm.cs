@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using GradeWork.Methods;
 using GradeWork.Network;
@@ -103,6 +102,13 @@ namespace GradeWork.Forms
                         MessageBox.Show("Console Access granted.");
                         // consoleaccess отправить обратно сигнал слушать две консоли
                         // Tyoe consoleaccess
+                        new Sender(UserIp).ClientHandler(NetMessageParser.GetNetMessage(new HashSet<Type>()
+                        {
+                            Type.WaitingRESPONSE,
+                            Type.TerminalAccess
+                        }));
+
+                        Terminal.CreateTerminal(UserIp);
                         break;
                     case "VideoAccess":
                         MessageBox.Show("Video Access granted.");
@@ -111,7 +117,7 @@ namespace GradeWork.Forms
                         
                         processRecord();
                         
-                        new Sender(UserIp).ClientHandler(NetMessageParser.GetNetMessage(UserIp, new HashSet<Type>()
+                        new Sender(UserIp).ClientHandler(NetMessageParser.GetNetMessage(new HashSet<Type>()
                         {
                             Type.WaitingRESPONSE,
                             Type.VideoAccess

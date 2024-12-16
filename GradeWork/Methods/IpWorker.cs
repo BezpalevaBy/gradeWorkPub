@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -34,11 +33,9 @@ public class IpWorker
         {
             if (!networkInterface.Name.Contains("Radmin")) continue;
             
-            // Проверяем, является ли интерфейс активным и поддерживает IPv4
             if (networkInterface.OperationalStatus == OperationalStatus.Up &&
                 networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback)
             {
-                // Адаптер беспроводной локальной сети Беспроводная сеть:
                 var properties = networkInterface.GetIPProperties();
                 foreach (var address in properties.UnicastAddresses)
                 {

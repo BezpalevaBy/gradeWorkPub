@@ -35,6 +35,9 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="Gma.System.MouseKeyHook, Version=5.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\MouseKeyHook.5.7.1\lib\net48\Gma.System.MouseKeyHook.dll</HintPath>
+        </Reference>
         <Reference Include="LibVLCSharp, Version=3.9.1.0, Culture=neutral, processorArchitecture=MSIL">
           <HintPath>..\packages\LibVLCSharp.3.9.1\lib\net471\LibVLCSharp.dll</HintPath>
         </Reference>
@@ -104,9 +107,14 @@
         <Compile Include="Forms\CallForm.cs" />
         <Compile Include="Forms\IncomingForm.cs" />
         <Compile Include="Forms\StartForm.cs" />
+        <Compile Include="Forms\TerminalForm.cs" />
         <Compile Include="Methods\CaptureWindow.cs" />
         <Compile Include="Methods\IpWorker.cs" />
         <Compile Include="Methods\MediaWindow.cs" />
+        <Compile Include="Methods\Terminal.cs" />
+        <Compile Include="Methods\VideoControl\MouseHook.cs" />
+        <Compile Include="Methods\VideoControl\MouseSimulator.cs" />
+        <Compile Include="Methods\VideoControl\MouseTracker.cs" />
         <Compile Include="Network\Listener.cs" />
         <Compile Include="Network\Messages\Message.cs" />
         <Compile Include="Network\Messages\NetMessageParser.cs" />

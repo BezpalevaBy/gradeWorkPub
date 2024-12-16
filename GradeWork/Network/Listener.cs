@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -20,11 +21,11 @@ public class Listener
     private TcpListener server;
     private Thread serverThread;
     private bool isRunning;
-    private TcpListener _tcpListener = new(IPAddress.Parse(IpWorker.GetLocalIpAddress()), 27000);
+    private readonly TcpListener _tcpListener = new(IPAddress.Parse(IpWorker.GetLocalIpAddress()), 27000);
 
     private Form1 Instance;
 
-    public List<Message> HistoryMessage { get; set; } = new List<Message>();
+    public List<Message> HistoryMessage { get; set; } = new();
 
     public Listener(string globalIp, Form1 form)
     {
@@ -63,8 +64,6 @@ public class Listener
                     NetMessage = message,
                     Time = DateTime.Now
                 });
-
-                //Console.WriteLine($"Received message: {message}");
             }
         }
         catch (Exception ex)
@@ -80,16 +79,23 @@ public class Listener
     public void ProcessMessage(string message)
     {
         message = message.ToLower();
+        
+        Console.WriteLine(message);
 
         if (CheckAboutStop()) return;
+        
         CheckAboutVideoAccess();
         CheckAboutOpeningIncomingForm();
         CheckAboutResponse();
+        CheckAboutTerminalAccess();
+        CheckAboutTerminalMessage();
+        CheckAboutTerminalResponse();
+        CheckAboutMovingMouse();
+        CheckAboutClickingMouse();
 
         bool CheckAboutStop()
         {
-            if (!message.Contains("stop")) return false;
-            return true;
+            return message.Contains("stop");
         }
 
         void CheckAboutVideoAccess()
@@ -111,7 +117,7 @@ public class Listener
                     Console.WriteLine($"Playing {localIp}");
 
                     var media = new MediaWindow();
-                    media.CreateAndPlay(localIp, Instance.mainPanel);
+                    media.CreateAndPlay(localIp, Instance.mainPanel, ip);
                 }
                 catch (Exception e)
                 {
@@ -142,14 +148,99 @@ public class Listener
             if (subMessages.Length < 2) return;
 
             var ip = subMessages.ElementAt(1);
-            
-            Console.WriteLine($"GOT RESPONSE MESSAGE IP TO SEND IS {ip}");
-            
+
             var sender = new Sender(ip);
-            sender.ClientHandler(NetMessageParser.GetNetMessage(ip, new HashSet<Type>()
+            sender.ClientHandler(NetMessageParser.GetNetMessage(new HashSet<Type>()
             {
-                Type.WaitingRESPONSE
             }));
+        }
+
+        void CheckAboutTerminalAccess()
+        {
+            if (!message.Contains("terminalaccess")) return;
+            var subMessages = message.Split('|');
+            if (subMessages.Length < 3) return;
+            var ip = subMessages.ElementAt(1).ToString(CultureInfo.InvariantCulture);
+            var userName = subMessages.ElementAt(2);
+
+            Terminal.CreateTerminal(ip);
+        }
+
+        void CheckAboutTerminalMessage()
+        {
+            Console.WriteLine($"IS THIS MESSAGE TERMINAL MESSAGE {message}");
+            
+            if (!message.Contains("terminalmessage")) return;
+            
+            Console.WriteLine($"THIS MESSAGE IS TERMINAL MESSAGE {message}");
+            
+            var subMessages = message.Split('|');
+            if (subMessages.Length < 3) return;
+            var ip = subMessages.ElementAt(1);
+            var userName = subMessages.ElementAt(2);
+
+            var valueMessage = subMessages.ElementAt(4);
+            var isReturnMessage = message.Contains("terminalnotresp");
+
+            var messageFromConsole = Terminal.ExecuteCommandInTerminal(ip, valueMessage);
+            
+            Console.WriteLine($"IT HAS SEND TO {ip} TO {userName} VALUE {valueMessage} ISRETURN {isReturnMessage} OUTPUTMESSAGE TO RETURN {messageFromConsole}");
+
+            Task.Run( (() =>
+            {
+                new Sender(ip).ClientHandler(NetMessageParser.GetNetMessageWithValue(new HashSet<Type>()
+                {
+                    Type.TerminalResponse
+                }, messageFromConsole));
+            }));
+        }
+        
+        void CheckAboutTerminalResponse()
+        {
+            if (!message.Contains("terminalresp")) return;
+            var subMessages = message.Split('|');
+            if (subMessages.Length < 3) return;
+            var ip = subMessages.ElementAt(1);
+            var userName = subMessages.ElementAt(2);
+
+            var valueMessage = subMessages.ElementAt(4);
+
+            Terminal.InsertInConsoleOfTerminal(ip, valueMessage);
+        }
+        
+        void CheckAboutMovingMouse()
+        {
+            if (!message.Contains("movemouse")) return;
+            var subMessages = message.Split('|');
+            if (subMessages.Length < 3) return;
+            var ip = subMessages.ElementAt(1);
+            var userName = subMessages.ElementAt(2);
+
+            var x = subMessages.ElementAt(4);
+            var y = subMessages.ElementAt(5);
+
+            if (int.TryParse(x, out var intX) && int.TryParse(y, out var intY))
+            {
+                MouseTracker.SetCursorPos(intX, intY);
+            }
+        }
+        
+        void CheckAboutClickingMouse()
+        {
+            if (!message.Contains("clickmouse")) return;
+            var subMessages = message.Split('|');
+            if (subMessages.Length < 3) return;
+            var ip = subMessages.ElementAt(1);
+            var userName = subMessages.ElementAt(2);
+
+            var x = subMessages.ElementAt(4);
+            var y = subMessages.ElementAt(5);
+            var isLeft = subMessages.ElementAt(6);
+
+            if (int.TryParse(x, out var intX) && int.TryParse(y, out var intY))
+            {
+                MouseSimulator.ClickMouse(intX, intY, isLeft);
+            }
         }
     }
 }

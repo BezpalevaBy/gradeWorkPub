@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GradeWork.Network;
 using Type = GradeWork.Network.Messages.Type;
 
 namespace GradeWork.Forms

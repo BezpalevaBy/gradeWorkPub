@@ -21,7 +21,7 @@ public class Promise
         Sender = new Sender(ip);
         SecondsForPromise = seconds;
 
-        Sender.ClientHandler(NetMessageParser.GetNetMessage(ip, typesForSender));
+        Sender.ClientHandler(NetMessageParser.GetNetMessage(typesForSender));
     }
 
     public async Task<bool> IsGetAnswer()
