@@ -91,6 +91,13 @@ namespace GradeWork.Methods
             using (var graphics = Graphics.FromImage(bitmap))
             {
                 graphics.CopyFromScreen(0, 0, 0, 0, new Size(1920,1080));
+
+                MouseTracker.GetCursorPos(out var point);
+                
+                var redBrush = Brushes.Red;
+                int dotSize = 10;
+        
+                graphics.FillEllipse(redBrush, point.X - dotSize / 2, point.Y - dotSize / 2, dotSize, dotSize);
             }
 
             return bitmap;

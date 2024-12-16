@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -45,6 +46,7 @@ namespace GradeWork.Methods
             {
                 Dock = DockStyle.Fill
             };
+            container.Size = new Size(1920, 1080);
 
             container.Controls.Clear();
             container.Controls.Add(videoView);
